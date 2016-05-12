@@ -1,6 +1,73 @@
 require_relative 'dice'
 
 class BeingLucky
+  BeingLuckyPlayer = Struct.new(:player_id, :joined_game, :points, :next_roll)
+
+  def initialize(options)
+    validate_init_options!(options)
+
+    @players = []
+
+    options[:no_players].times { |i| @players << BeingLuckyPlayer.new(i + 1, false, 0, 5) }
+  end
+
+  def players
+    @players.collect(&:player_id)
+  end
+
+  def joined_game?(player_id)
+    player = find_player!(player_id)
+
+    player.joined_game
+  end
+
+  def player_next_roll(player_id)
+    player = find_player!(player_id)
+
+    player.next_roll
+  end
+
+  def player_current_points(player_id)
+    player = find_player!(player_id)
+
+    player.points
+  end
+
+  def join_game(player_id)
+    player = find_player!(player_id)
+
+    raise 'Player already joined the game' if player.joined_game
+
+    player_roll = Dice.roll(player.next_roll)
+    points, remaining_roll = BeingLucky.calculate_roll_points(player_roll)
+
+    if points >= 300
+      player.joined_game = true
+      player.points      = points
+      player.next_roll   = remaining_roll.length
+    end
+
+    [player.joined_game, player_roll, points]
+  end
+
+  def roll_dices(player_id)
+    player = find_player!(player_id)
+
+    player_roll = Dice.roll(player.next_roll)
+
+    points, remaining_roll = BeingLucky.calculate_roll_points(player_roll)
+
+    if points > 0
+      player.points     += points
+      player.next_roll   = remaining_roll.empty? ? 5 : remaining_roll.length
+    else
+      player.points    = 0
+      player.next_roll = 5
+    end
+
+    [points, player_roll]
+  end
+
   def self.calculate_roll_points(roll)
     validate_roll!(roll)
 
@@ -53,4 +120,24 @@ class BeingLucky
     [result_point, result_roll]
   end
   private_class_method :three_of_a_kind
+
+  private
+
+  def validate_init_options!(options)
+    raise 'options is not a valid Hash object' unless options.is_a?(Hash)
+    raise 'options has invalid entries' unless (options.keys - [:no_players]).empty?
+    raise 'no_players must be an integer between 2 and 9' unless options[:no_players].is_a?(Integer) && options[:no_players].between?(2, 9)
+  end
+
+  def find_player!(player_id)
+    raise 'Invalid player id' unless player_id.is_a?(Integer)
+
+    player_idx = @players.index { |p| p.player_id == player_id }
+
+    if player_idx
+      @players[player_idx]
+    else
+      raise 'Player not found'
+    end
+  end
 end
