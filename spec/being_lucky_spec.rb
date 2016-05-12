@@ -101,7 +101,7 @@ describe BeingLucky do
       it 'returns an error for invalid player id' do
         expect { valid_game.joined_game?('1') }.to raise_error('Invalid player id')
       end
-      
+
       it 'returns an error if player have already joined the game' do
         allow(Dice).to receive(:roll).with(5).and_return([1, 1, 1, 3, 4])
         valid_game.join_game(1)
@@ -111,11 +111,19 @@ describe BeingLucky do
   end
 
   describe '#player_next_roll' do
-    context 'with a new BeingLucky object with no rounds played' do
-      it 'returns 5 for all players' do
-        valid_init_options[:no_players].times do |i|
-          expect(valid_game.player_next_roll(i + 1)).to eq(5)
+    context 'with a valid BeingLucky object' do
+      context 'and with no rounds played' do
+        it 'returns 5 for all players' do
+          valid_init_options[:no_players].times do |i|
+            expect(valid_game.player_next_roll(i + 1)).to eq(5)
+          end
         end
+      end
+
+      it 'returns 2 after player joined game with [1,1,1,3,4] roll' do
+        allow(Dice).to receive(:roll).with(5).and_return([1, 1, 1, 3, 4])
+        valid_game.join_game(1)
+        expect(valid_game.player_next_roll(1)).to eq(2)
       end
 
       it 'returns an error when player not found' do
@@ -129,11 +137,19 @@ describe BeingLucky do
   end
 
   describe '#player_current_points' do
-    context 'with a new BeingLucky object with no rounds played' do
-      it 'returns 0 for all players' do
-        valid_init_options[:no_players].times do |i|
-          expect(valid_game.player_current_points(i + 1)).to eq(0)
+    context 'with a valid BeingLucky object' do
+      context 'and with no rounds played' do
+        it 'returns 0 for all players' do
+          valid_init_options[:no_players].times do |i|
+            expect(valid_game.player_current_points(i + 1)).to eq(0)
+          end
         end
+      end
+
+      it 'returns 1000 after player joined game with [1,1,1,3,4] roll' do
+        allow(Dice).to receive(:roll).with(5).and_return([1, 1, 1, 3, 4])
+        valid_game.join_game(1)
+        expect(valid_game.player_current_points(1)).to eq(1000)
       end
 
       it 'returns an error when player not found' do
