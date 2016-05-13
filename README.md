@@ -1,11 +1,19 @@
-Playing "Being Lucky"
-=====================
+# Being Lucky
+[![Build Status](https://travis-ci.com/phlcastro/beinglucky.svg?token=vrTzq1LMxYPdMZthtcvh&branch=master)](https://travis-ci.com/phlcastro/beinglucky)
+[![Code Climate](https://codeclimate.com/github/phlcastro/beinglucky/badges/gpa.svg)](https://codeclimate.com/github/phlcastro/beinglucky)
 
-"Being Lucky" is is played among 2 or more players, using 5
+## Description
+"Being Lucky" is played among 2 or more players, using 5
 six-sided dice.
 
-Playing "Being Lucky"
----------------------
+## Usage
+1. Run `bundle`
+2. Run `ruby being_lucky_game.rb -n [2-9]` or `./being_lucky_game.rb -n [2-9]`
+3. Follow the game instructions on your screen
+4. Have fun!
+
+## Rules
+### Playing "Being Lucky"
 
 Each player takes a turn consisting of one or more rolls of the dice.
 On the first roll of the game, a player rolls all five dice which are
@@ -34,7 +42,7 @@ Example Scoring
 
 The dice not contributing to the score are called the non-scoring
 dice.  "3" and "4" are non-scoring dice in the first example.  "3" is
-a non-scoring die in the second, and "2" is a non-score die in the
+a non-scoring dice in the second, and "2" is a non-score dice in the
 final example.
 
 After a player rolls and the score is calculated, the scoring dice are
@@ -48,24 +56,15 @@ also accumulated score for that turn. If a player decides to stop
 rolling before rolling a zero-point roll, then the accumulated points
 for the turn is added to his total score.
 
-Getting "In The Game"
----------------------
+### Getting "In The Game"
 
 Before a player is allowed to accumulate points, they must get at
 least 300 points in a single turn. Once they have achieved 300 points
 in a single turn, the points earned in that turn and each following
 turn will be counted toward their total score.
 
-End Game
---------
+### End Game
 
 Once a player reaches 3000 (or more) points, the game enters the final
 round where each of the other players gets one more turn. The winner
 is the player with the highest score after the final round.
-
-Interface
----------
-
-Your job is to implement BeingLucky
-
-    BeingLucky.new(dice).score
