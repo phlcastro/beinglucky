@@ -161,4 +161,35 @@ describe BeingLucky do
       end
     end
   end
+
+  describe '#roll_dices' do
+    context 'with a valid BeingLucky object' do
+      it 'returns 100 with [1,4] roll' do
+        allow(Dice).to receive(:roll).with(5).and_return([1, 1, 1, 3, 4])
+        allow(Dice).to receive(:roll).with(2).and_return([1, 4])
+        valid_game.join_game(1)
+        expect(valid_game.roll_dices(1)).to eq([100, [1, 4]])
+      end
+
+      it 'updates correctly the player points if result > 0' do
+        allow(Dice).to receive(:roll).with(5).and_return([1, 1, 1, 3, 4])
+        allow(Dice).to receive(:roll).with(2).and_return([1, 4])
+        valid_game.join_game(1)
+        valid_game.roll_dices(1)
+        expect(valid_game.player_current_points(1)).to eq(1100)
+      end
+
+      it 'updates correctly the player points if result = 0' do
+        allow(Dice).to receive(:roll).with(5).and_return([1, 1, 1, 3, 4])
+        allow(Dice).to receive(:roll).with(2).and_return([3, 4])
+        valid_game.join_game(1)
+        valid_game.roll_dices(1)
+        expect(valid_game.player_current_points(1)).to eq(0)
+      end
+
+      it 'returns an error if player had not joined the game' do
+        expect { valid_game.roll_dices(1) }.to raise_error('Player not joined the game')
+      end
+    end
+  end
 end

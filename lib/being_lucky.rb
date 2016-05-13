@@ -53,6 +53,8 @@ class BeingLucky
   def roll_dices(player_id)
     player = find_player!(player_id)
 
+    raise 'Player not joined the game' unless joined_game?(player_id)
+
     player_roll = Dice.roll(player.next_roll)
 
     points, remaining_roll = BeingLucky.calculate_roll_points(player_roll)
