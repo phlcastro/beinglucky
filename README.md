@@ -1,4 +1,4 @@
-## "Being Lucky"
+# Being Lucky
 [![Build Status](https://travis-ci.com/phlcastro/beinglucky.svg?token=vrTzq1LMxYPdMZthtcvh&branch=master)](https://travis-ci.com/phlcastro/beinglucky)
 [![Code Climate](https://codeclimate.com/github/phlcastro/beinglucky/badges/gpa.svg)](https://codeclimate.com/github/phlcastro/beinglucky)
 
