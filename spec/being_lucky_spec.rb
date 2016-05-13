@@ -192,4 +192,15 @@ describe BeingLucky do
       end
     end
   end
+
+  describe '#reset_next_roll' do
+    context 'with a valid BeingLucky object' do
+      it 'set player next roll to 5' do
+        allow(Dice).to receive(:roll).with(5).and_return([1, 1, 1, 3, 4])
+        valid_game.join_game(1)
+        valid_game.reset_next_roll(1)
+        expect(valid_game.player_next_roll(1)).to eq(5)
+      end
+    end
+  end
 end

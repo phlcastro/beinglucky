@@ -44,7 +44,7 @@ class BeingLucky
     if points >= 300
       player.joined_game = true
       player.points      = points
-      player.next_roll   = remaining_roll.length
+      player.next_roll   = !remaining_roll.empty? ? remaining_roll.length : 5
     end
 
     [player.joined_game, player_roll, points]
@@ -68,6 +68,18 @@ class BeingLucky
     end
 
     [points, player_roll]
+  end
+
+  def reset_next_roll(player_id)
+    player = find_player!(player_id)
+
+    player.next_roll = 5
+
+    true
+  end
+
+  def winner
+    @players.sort { |a, b| a.points <=> b.points }.last.player_id
   end
 
   def self.calculate_roll_points(roll)
